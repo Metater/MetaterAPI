@@ -36,7 +36,7 @@ namespace MetaterAPI
         }
         public static string IfNoQueryArgs(IHttpContext context)
         {
-            if (context.Request.QueryString.Count == 0)
+            if (context.Request.QueryString.Count != 0)
                 return "NoQueryArgs";
             return null;
         }

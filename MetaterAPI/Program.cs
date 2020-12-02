@@ -21,6 +21,7 @@ namespace MetaterAPI
             using (var server = new RestServer())
             {
                 server.Host = "+";
+                //server.Host = "localhost";
                 server.Port = "5000";
                 server.LogToConsole().Start();
                 Console.ReadLine();
