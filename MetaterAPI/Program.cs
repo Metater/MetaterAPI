@@ -42,7 +42,7 @@ namespace MetaterAPI
     [RestResource]
     public class For
     {
-        string chatData = Directory.GetCurrentDirectory() + @"\chat.txt";
+        string chatDataPath = Directory.GetCurrentDirectory() + @"\chat.txt";
 
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/")]
         public IHttpContext ForBase(IHttpContext context)
@@ -85,16 +85,16 @@ namespace MetaterAPI
 
         private string GetChat()
         {
-            string chat = File.ReadAllText(chatData);
+            string chat = File.ReadAllText(chatDataPath);
             return chat;
         }
         private void SaveChat(string chat)
         {
-            File.WriteAllText(chatData, chat);
+            File.WriteAllText(chatDataPath, chat);
         }
         private void ClearChat()
         {
-            File.WriteAllText(chatData, "");
+            File.WriteAllText(chatDataPath, "");
         }
         private void AddChat(string line)
         {
