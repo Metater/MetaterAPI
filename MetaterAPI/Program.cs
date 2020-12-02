@@ -44,30 +44,33 @@ namespace MetaterAPI
         string chatData = Directory.GetCurrentDirectory() + @"\chat.txt";
 
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/")]
-        public IHttpContext Home(IHttpContext context)
+        public IHttpContext ForBase(IHttpContext context)
         {
-            if ((context.Request.QueryString["for"] != null) && (context.Request.QueryString["name"] == null))
+            string deprecatedFor = Utilities.IfQueryStringMatchAndNoOtherQueryString(context, "for", "name");
+            if (deprecatedFor != null)
             {
                 AddChat(context.Request.QueryString["for"]);
                 context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
                 return context;
             }
-            else if (context.Request.QueryString["aud"] != null)
+
+            string noQueryArgs = Utilities.IfNoQueryArgs(context);
+            if (noQueryArgs == null)
             {
                 context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
                 return context;
             }
-            else if ((context.Request.QueryString["name"] != null) && (context.Request.QueryString["for"] != null))
+
+            string forQuery = Utilities.IfQueryStringMatch(context, "for");
+            string nameQuery = Utilities.IfQueryStringMatch(context, "name");
+            if ((forQuery != null) && (nameQuery != null))
             {
                 AddChat("<" + context.Request.QueryString["name"] + "> " + context.Request.QueryString["for"]);
                 context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
-            }
-            else if (context.Request.QueryString["for"] == null)
-            {
-                context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
                 return context;
             }
-            context.Response.SendResponse("400");
+
+            context.Response.SendResponse("If not intended, tell me it's broken.");
             return context;
         }
 
@@ -75,7 +78,7 @@ namespace MetaterAPI
         public IHttpContext Clear(IHttpContext context)
         {
             ClearChat();
-            context.Response.SendResponse("200");
+            context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
             return context;
         }
 

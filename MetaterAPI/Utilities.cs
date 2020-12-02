@@ -16,8 +16,7 @@ namespace MetaterAPI
             {
                 return context.Request.QueryString[queryArg];
             }
-            else
-                return null;
+            return null;
         }
         public static string IfQueryStringMatch(IHttpContext context, string queryArg)
         {
@@ -25,9 +24,21 @@ namespace MetaterAPI
             {
                 return context.Request.QueryString[queryArg];
             }
-            else
-                return null;
+            return null;
         }
-        public static string If
+        public static string IfQueryStringMatchAndNoOtherQueryString(IHttpContext context, string queryArg, string otherQueryArg)
+        {
+            if ((context.Request.QueryString[queryArg] != null) && (context.Request.QueryString[otherQueryArg] == null))
+            {
+                return context.Request.QueryString[queryArg];
+            }
+            return null;
+        }
+        public static string IfNoQueryArgs(IHttpContext context)
+        {
+            if (context.Request.QueryString.Count == 0)
+                return "NoQueryArgs";
+            return null;
+        }
     }
 }
