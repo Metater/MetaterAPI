@@ -11,6 +11,8 @@ using Grapevine.Client;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using HtmlAgilityPack;
+using System.Xml.XPath;
 
 namespace MetaterAPI
 {
@@ -46,15 +48,40 @@ namespace MetaterAPI
         {
             return File.ReadAllLines(Directory.GetCurrentDirectory() + @"\" + localPath);
         }
+        public static void AddLine(string localPath, string line)
+        {
+            string text = GetFile(localPath);
+            text += line + "\n";
+            File.WriteAllText(Directory.GetCurrentDirectory() + @"\" + localPath, text);
+        }
     }
     [RestResource]
-    public class MCServerData
+    public class DataRecieving
     {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/mc")]
-        public IHttpContext MC(IHttpContext context)
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/data")]
+        public IHttpContext Data(IHttpContext context)
         {
-            Console.WriteLine(context.Request.RawUrl);
-            context.Response.SendResponse("Welcome!");
+            if (context.Request.QueryString["data"] != null)
+            {
+                Main.AddLine("dataLog.txt", context.Request.QueryString["data"]);
+            }
+            context.Response.SendResponse("200");
+            return context;
+        }
+    }
+    [RestResource]
+    public class VerseOfTheDay
+    {
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/votd")]
+        public IHttpContext Get(IHttpContext context)
+        {
+            var url = "https://www.bible.com/verse-of-the-day";
+            var web = new HtmlWeb();
+            var doc = web.Load(url);
+            XPathNavigator nodeVerseText = doc.CreateNavigator().SelectSingleNode("/html/body/div[1]/div[1]/div/div/div[1]/div[1]/p[1]/text()");
+            XPathNavigator nodeVerse = doc.CreateNavigator().SelectSingleNode("/html/body/div[1]/div[1]/div/div/div[1]/div[1]/p[2]/text()");
+            context.Response.SendResponse(nodeVerseText.Value + "\n" + nodeVerse.Value);
+
             return context;
         }
     }
