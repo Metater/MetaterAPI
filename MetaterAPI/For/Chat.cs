@@ -4,6 +4,8 @@ using Grapevine.Server.Attributes;
 using Grapevine.Interfaces.Server;
 using Grapevine.Shared;
 using System.IO;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace MetaterAPI.For
 {
@@ -11,6 +13,7 @@ namespace MetaterAPI.For
     public class Chat
     {
         string chatDataPath = Directory.GetCurrentDirectory() + @"\chat.txt";
+        List<string> fclearKeys = new List<string>(Main.GetLines("fclearKeys.txt"));
 
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/f")]
         public IHttpContext Router(IHttpContext context)
@@ -24,6 +27,15 @@ namespace MetaterAPI.For
                 return context;
             }
 
+            string fQuery = Utilities.IfQueryStringMatch(context, "f");
+            string nQuery = Utilities.IfQueryStringMatch(context, "n");
+            if ((fQuery != null) && (nQuery != null))
+            {
+                if (context.Request.QueryString["f"] != "")
+                    AddChat("<" + context.Request.QueryString["n"] + "> " + context.Request.QueryString["f"]);
+                context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
+                return context;
+            }
             string forQuery = Utilities.IfQueryStringMatch(context, "for");
             string nameQuery = Utilities.IfQueryStringMatch(context, "name");
             if ((forQuery != null) && (nameQuery != null))
@@ -34,15 +46,24 @@ namespace MetaterAPI.For
                 return context;
             }
 
+
             context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
             return context;
         }
 
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/clear")]
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/fclear")]
         public IHttpContext Clear(IHttpContext context)
         {
-            ClearChat();
-            context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
+            string fclearKey = Utilities.IfOneQueryStringAndMatch(context, "key");
+            if (fclearKey != null && fclearKeys.Contains(fclearKey))
+            {
+                ClearChat();
+                context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n" + "Clear success!");
+            }
+            else
+            {
+                context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n" + "Clear failed, no permission!");
+            }
             return context;
         }
 

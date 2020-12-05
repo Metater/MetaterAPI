@@ -38,9 +38,13 @@ namespace MetaterAPI
             context.Response.SendResponse(GetFile("base.txt"));
             return context;
         }
-        public string GetFile(string localPath)
+        public static string GetFile(string localPath)
         {
             return File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + localPath);
+        }
+        public static string[] GetLines(string localPath)
+        {
+            return File.ReadAllLines(Directory.GetCurrentDirectory() + @"\" + localPath);
         }
     }
     [RestResource]

@@ -12,7 +12,7 @@ namespace MetaterAPI.For
     {
         public static string IfOneQueryStringAndMatch(IHttpContext context, string queryArg)
         {
-            if ((context.Request.QueryString[queryArg] != null) && context.Request.QueryString.Count == 0)
+            if ((context.Request.QueryString[queryArg] != null) && context.Request.QueryString.Count == 1)
             {
                 return context.Request.QueryString[queryArg];
             }
