@@ -20,32 +20,7 @@ namespace MetaterAPI
     {
         static void Main(string[] args)
         {
-            using (var server = new RestServer())
-            {
-                bool inputValid = false;
-                char input;
-                while(!inputValid)
-                {
-                    Console.WriteLine("Release or Debug? (R||D)");
-                    input = Console.ReadKey().KeyChar;
-                    if (input == 'R')
-                    {
-                        server.Host = "+";
-                        inputValid = true;
-                        Console.WriteLine("");
-                    }
-                    if (input == 'D')
-                    {
-                        server.Host = "localhost";
-                        inputValid = true;
-                        Console.WriteLine("");
-                    }
-                }
-                server.Port = "5000";
-                server.LogToConsole().Start();
-                Console.ReadLine();
-                server.Stop();
-            }
+            using (RestServer server = new RestServer()) { Utilities.StartRestServer(server); }
         }
     }
     [RestResource]
