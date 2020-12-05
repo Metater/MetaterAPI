@@ -22,8 +22,25 @@ namespace MetaterAPI
         {
             using (var server = new RestServer())
             {
-                server.Host = "+";
-                //server.Host = "localhost";
+                bool inputValid = false;
+                char input;
+                while(!inputValid)
+                {
+                    Console.WriteLine("Release or Debug? (R||D)");
+                    input = Console.ReadKey().KeyChar;
+                    if (input == 'R')
+                    {
+                        server.Host = "+";
+                        inputValid = true;
+                        Console.WriteLine("");
+                    }
+                    if (input == 'D')
+                    {
+                        server.Host = "localhost";
+                        inputValid = true;
+                        Console.WriteLine("");
+                    }
+                }
                 server.Port = "5000";
                 server.LogToConsole().Start();
                 Console.ReadLine();
@@ -53,6 +70,16 @@ namespace MetaterAPI
             string text = GetFile(localPath);
             text += line + "\n";
             File.WriteAllText(Directory.GetCurrentDirectory() + @"\" + localPath, text);
+        }
+    }
+    [RestResource]
+    public class GetMCData
+    {
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/mc")]
+        public IHttpContext Get(IHttpContext context)
+        {
+            context.Response.SendResponse(Main.GetFile("dataLog.txt"));
+            return context;
         }
     }
     [RestResource]
