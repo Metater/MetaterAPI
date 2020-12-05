@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Grapevine.Server;
 using Grapevine.Server.Attributes;
 using Grapevine.Interfaces.Server;
 using Grapevine.Shared;
+using System.IO;
 
-namespace MetaterAPI
+
+namespace MetaterAPI.For
 {
     public static class Utilities
     {
