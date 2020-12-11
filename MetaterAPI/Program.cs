@@ -24,16 +24,6 @@ namespace MetaterAPI
         }
     }
     [RestResource]
-    public class Main
-    {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/")]
-        public IHttpContext Base(IHttpContext context)
-        {
-            context.Response.SendResponse(Utilities.IO.GetFile("base.txt"));
-            return context;
-        }
-    }
-    [RestResource]
     public class Notes
     {
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notescreate")]
