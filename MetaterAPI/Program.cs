@@ -20,7 +20,7 @@ namespace MetaterAPI
     {
         static void Main(string[] args)
         {
-            using (RestServer server = new RestServer()) { Utilities.StartRestServer(server); }
+            using (RestServer server = new RestServer()) { Utilities.Server.StartRestServer(server); }
         }
     }
     [RestResource]
@@ -29,62 +29,47 @@ namespace MetaterAPI
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/")]
         public IHttpContext Base(IHttpContext context)
         {
-            context.Response.SendResponse(GetFile("base.txt"));
+            context.Response.SendResponse(Utilities.IO.GetFile("base.txt"));
             return context;
-        }
-        public static string GetFile(string localPath)
-        {
-            return File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + localPath);
-        }
-        public static string[] GetLines(string localPath)
-        {
-            return File.ReadAllLines(Directory.GetCurrentDirectory() + @"\" + localPath);
-        }
-        public static void AddLine(string localPath, string line)
-        {
-            string text = GetFile(localPath);
-            text += line + "\n";
-            File.WriteAllText(Directory.GetCurrentDirectory() + @"\" + localPath, text);
         }
     }
     [RestResource]
-    public class GetMCData
+    public class Notes
     {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/mc")]
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notescreate")]
+        public IHttpContext Create(IHttpContext context)
+        {
+            return context;
+        }
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/noteslist")]
+        public IHttpContext List(IHttpContext context)
+        {
+            return context;
+        }
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesget")]
         public IHttpContext Get(IHttpContext context)
         {
-            context.Response.SendResponse(Main.GetFile("dataLog.txt"));
             return context;
         }
-    }
-    [RestResource]
-    public class DataRecieving
-    {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/data")]
-        public IHttpContext Data(IHttpContext context)
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesadd")]
+        public IHttpContext Add(IHttpContext context)
         {
-            if (context.Request.QueryString["data"] != null)
-            {
-                Main.AddLine("dataLog.txt", context.Request.QueryString["data"]);
-            }
-            context.Response.SendResponse("200");
+            
+            AddNotesFromURLToID()
             return context;
         }
-    }
-    [RestResource]
-    public class VerseOfTheDay
-    {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/votd")]
-        public IHttpContext Get(IHttpContext context)
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesdelete")]
+        public IHttpContext Delete(IHttpContext context)
         {
-            var url = "https://www.bible.com/verse-of-the-day";
-            var web = new HtmlWeb();
-            var doc = web.Load(url);
-            XPathNavigator nodeVerseText = doc.CreateNavigator().SelectSingleNode("/html/body/div[1]/div[1]/div/div/div[1]/div[1]/p[1]/text()");
-            XPathNavigator nodeVerse = doc.CreateNavigator().SelectSingleNode("/html/body/div[1]/div[1]/div/div/div[1]/div[1]/p[2]/text()");
-            context.Response.SendResponse(nodeVerseText.Value + "\n" + nodeVerse.Value);
-
             return context;
+        }
+        public static void AddNotesFromURLToID(string url, string id)
+        {
+            Console.WriteLine(Utils.HttpRequests.GetRawString(url));
+        }
+        public static string GetNotesWithID(string id)
+        {
+            return "";
         }
     }
 }
