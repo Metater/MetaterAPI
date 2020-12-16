@@ -16,7 +16,7 @@ namespace MetaterAPI.GeneralResources
         {
             if (context.Request.QueryString["data"] != null)
             {
-                Utilities.IO.AddLine("dataLog.txt", context.Request.QueryString["data"]);
+                Utils.IO.AddLine("dataLog.txt", context.Request.QueryString["data"]);
             }
             context.Response.SendResponse("200");
             return context;

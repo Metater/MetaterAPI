@@ -20,46 +20,7 @@ namespace MetaterAPI
     {
         static void Main(string[] args)
         {
-            using (RestServer server = new RestServer()) { Utilities.Server.StartRestServer(server); }
-        }
-    }
-    [RestResource]
-    public class Notes
-    {
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notescreate")]
-        public IHttpContext Create(IHttpContext context)
-        {
-            return context;
-        }
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/noteslist")]
-        public IHttpContext List(IHttpContext context)
-        {
-            return context;
-        }
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesget")]
-        public IHttpContext Get(IHttpContext context)
-        {
-            return context;
-        }
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesadd")]
-        public IHttpContext Add(IHttpContext context)
-        {
-            
-            AddNotesFromURLToID()
-            return context;
-        }
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/notesdelete")]
-        public IHttpContext Delete(IHttpContext context)
-        {
-            return context;
-        }
-        public static void AddNotesFromURLToID(string url, string id)
-        {
-            Console.WriteLine(Utils.HttpRequests.GetRawString(url));
-        }
-        public static string GetNotesWithID(string id)
-        {
-            return "";
+            using (RestServer server = new RestServer()) { Utils.Server.StartRestServer(server); }
         }
     }
 }

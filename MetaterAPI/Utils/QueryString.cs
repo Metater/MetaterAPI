@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Grapevine.Interfaces.Server;
+using System.Collections.Specialized;
 
 namespace MetaterAPI.Utils
 {
@@ -37,5 +38,20 @@ namespace MetaterAPI.Utils
                 return "NoQueryArgs";
             return null;
         }
+        public static string GetMatchingQueryStringKeyFromNameList(IHttpContext context, string key, List<string> names)
+        {
+            foreach (string name in names)
+                if (names.Contains(context.Request.QueryString[key]))
+                    return names[names.IndexOf((context.Request.QueryString[key]))];
+            return null;
+        }
+        public static bool ContainsQueryString(IHttpContext context, string key)
+        {
+            foreach(string queryStringKey in context.Request.QueryString.AllKeys)
+                if (queryStringKey == key)
+                    return true;
+            return false;
+        }
+
     }
 }

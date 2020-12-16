@@ -14,7 +14,7 @@ namespace MetaterAPI.GeneralResources
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/")]
         public IHttpContext Response(IHttpContext context)
         {
-            context.Response.SendResponse(Utilities.IO.GetFile("base.txt"));
+            context.Response.SendResponse(Utils.IO.GetFile("base.txt"));
             return context;
         }
     }

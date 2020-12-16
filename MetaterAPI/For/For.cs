@@ -9,26 +9,26 @@ using System.Collections;
 
 namespace MetaterAPI.For
 {
-    [RestResource]
-    public class Chat
+    //[RestResource]
+    public class For
     {
         string chatDataPath = Directory.GetCurrentDirectory() + @"\chat.txt";
-        List<string> fclearKeys = new List<string>(Main.GetLines("fclearKeys.txt"));
+        List<string> fclearKeys = new List<string>(Utils.IO.GetLines("fclearKeys.txt"));
 
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/f")]
+        //[RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/f")]
         public IHttpContext Router(IHttpContext context)
         {
             Console.WriteLine(context.Request.RawUrl);
 
-            string noQueryArgs = Utilities.IfNoQueryArgs(context);
+            string noQueryArgs = Utils.QueryString.IfNoQueryArgs(context);
             if (noQueryArgs == null)
             {
                 context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
                 return context;
             }
 
-            string fQuery = Utilities.IfQueryStringMatch(context, "f");
-            string nQuery = Utilities.IfQueryStringMatch(context, "n");
+            string fQuery = Utils.QueryString.IfQueryStringMatch(context, "f");
+            string nQuery = Utils.QueryString.IfQueryStringMatch(context, "n");
             if ((fQuery != null) && (nQuery != null))
             {
                 if (context.Request.QueryString["f"] != "")
@@ -36,8 +36,8 @@ namespace MetaterAPI.For
                 context.Response.SendResponse(GetChat() + "Last loaded at: " + DateTime.Now.ToString("hh:mm:ss tt") + "\n");
                 return context;
             }
-            string forQuery = Utilities.IfQueryStringMatch(context, "for");
-            string nameQuery = Utilities.IfQueryStringMatch(context, "name");
+            string forQuery = Utils.QueryString.IfQueryStringMatch(context, "for");
+            string nameQuery = Utils.QueryString.IfQueryStringMatch(context, "name");
             if ((forQuery != null) && (nameQuery != null))
             {
                 if (context.Request.QueryString["for"] != "")
@@ -51,10 +51,10 @@ namespace MetaterAPI.For
             return context;
         }
 
-        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/fclear")]
+        //[RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/fclear")]
         public IHttpContext Clear(IHttpContext context)
         {
-            string fclearKey = Utilities.IfOneQueryStringAndMatch(context, "key");
+            string fclearKey = Utils.QueryString.IfOneQueryStringAndMatch(context, "key");
             if (fclearKey != null && fclearKeys.Contains(fclearKey))
             {
                 ClearChat();

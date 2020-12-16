@@ -14,7 +14,7 @@ namespace MetaterAPI.GeneralResources
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/mc")]
         public IHttpContext Get(IHttpContext context)
         {
-            context.Response.SendResponse(Utilities.IO.GetFile("dataLog.txt"));
+            context.Response.SendResponse(Utils.IO.GetFile("dataLog.txt"));
             return context;
         }
     }
