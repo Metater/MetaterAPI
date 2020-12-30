@@ -13,13 +13,18 @@ using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
 using System.Xml.XPath;
+using System.Security.Cryptography;
 
 namespace MetaterAPI
 {
     class Program
     {
+        //TODO a
         static void Main(string[] args)
-        {
+        { 
+            RSAParameters rsaParams = MetaMit.Cryptography.Asymmetric.Generation.GenRSAParams(2048);
+            Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPublicKey(rsaParams));
+            Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPrivateKey(rsaParams));
             using (RestServer server = new RestServer()) { Utils.Server.StartRestServer(server); }
         }
     }

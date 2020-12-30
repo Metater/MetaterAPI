@@ -8,6 +8,17 @@ namespace MetaterAPI.Utils
 {
     public static class SymmetricCryptography
     {
+        public static class General
+        {
+            public static string GenKey()
+            {
+                using (Aes aes = Aes.Create())
+                {
+                    aes.GenerateKey();
+                    return System.Text.Encoding.UTF8.GetString(aes.Key);
+                }
+            }
+        }
         public static class Encryption
         {
             public static string EncryptString(string key, string plainText)

@@ -14,4 +14,10 @@
     <Folder Include="EfficaxBot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MetaMit">
+      <HintPath>..\..\MetaMit\MetaMit\bin\Debug\netcoreapp3.1\MetaMit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
