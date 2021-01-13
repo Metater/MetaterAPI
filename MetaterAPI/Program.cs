@@ -22,9 +22,9 @@ namespace MetaterAPI
         //TODO a
         static void Main(string[] args)
         { 
-            RSAParameters rsaParams = MetaMit.Cryptography.Asymmetric.Generation.GenRSAParams(2048);
-            Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPublicKey(rsaParams));
-            Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPrivateKey(rsaParams));
+            //RSAParameters rsaParams = MetaMit.Cryptography.Asymmetric.Generation.GenRSAParams(2048);
+            //Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPublicKey(rsaParams));
+            //Console.WriteLine(MetaMit.Cryptography.Asymmetric.Collection.GetPrivateKey(rsaParams));
             using (RestServer server = new RestServer()) { Utils.Server.StartRestServer(server); }
         }
     }

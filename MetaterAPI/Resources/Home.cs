@@ -15,7 +15,7 @@ namespace MetaterAPI.GeneralResources
         public IHttpContext Response(IHttpContext context)
         {
             Console.WriteLine(context.Request.Url.UserInfo);
-            context.Response.AppendCookie(new System.Net.Cookie(new System.Random().Next(0, 20000).ToString(), "ME LOVE COOKIES"));
+            //context.Response.AppendCookie(new System.Net.Cookie(new System.Random().Next(0, 20000).ToString(), "ME LOVE COOKIES"));
             context.Response.SendResponse(Utils.IO.GetFile("base.txt"));
             return context;
         }

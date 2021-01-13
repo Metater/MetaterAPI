@@ -9,7 +9,9 @@ namespace MetaterAPI.Utils
     {
         public static string FormatPath(string localPath) { return Directory.GetCurrentDirectory() + @"\" + localPath; }
         public static string GetFile(string localPath) { return File.ReadAllText(FormatPath(localPath)); }
+        public static string GetFileAbsolute(string path) { return File.ReadAllText(path); }
         public static void SetFile(string localPath, string data) { File.WriteAllText(FormatPath(localPath), data); }
+        public static void SetFileAbsolute(string path, string data) { File.WriteAllText(path, data); }
         public static string[] GetFilesInDirectory(string localPath) { return Directory.GetFiles(FormatPath(localPath)); }
         public static string[] GetLines(string localPath) { return File.ReadAllLines(FormatPath(localPath)); }
         public static void SetLines(string localPath, string[] data) { File.WriteAllLines(FormatPath(localPath), data); }
