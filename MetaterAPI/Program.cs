@@ -19,7 +19,6 @@ namespace MetaterAPI
 {
     class Program
     {
-        //TODO a
         static void Main(string[] args)
         { 
             //RSAParameters rsaParams = MetaMit.Cryptography.Asymmetric.Generation.GenRSAParams(2048);
