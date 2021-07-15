@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using MetaterAPI.Utils;
 using System.IO;
+using NetCoreServer;
 
 namespace MetaterAPI
 {
@@ -13,6 +14,25 @@ namespace MetaterAPI
     public class Robot
     {
         string robotSpeedsDBPath => Directory.GetCurrentDirectory() + @"\robotSpeeds.db";
+        string localRobotIPDBPath => Directory.GetCurrentDirectory() + @"\localRobotIP.db";
+
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/postlocalrobotip")]
+        public IHttpContext PostLocalRobotIP(IHttpContext context)
+        {
+            if (QueryString.ContainsQueryString(context, "ip"))
+            {
+                SetLocalRobotIP(context.Request.QueryString["ip"]);
+            }
+            context.Response.SendResponse("200");
+            return context;
+        }
+
+        [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/getlocalrobotip")]
+        public IHttpContext GetLocalRobotIP(IHttpContext context)
+        {
+            context.Response.SendResponse(GetLocalRobotIP());
+            return context;
+        }
 
 
         [RestRoute(HttpMethod = HttpMethod.GET, PathInfo = "/getrobot")]
@@ -69,6 +89,20 @@ namespace MetaterAPI
         private void SetRobotSpeeds(int left, int right)
         {
             File.WriteAllText(robotSpeedsDBPath, left + "\n" + right);
+        }
+
+        private string GetLocalRobotIP()
+        {
+            if (!File.Exists(localRobotIPDBPath))
+            {
+                return null;
+            }
+            return File.ReadAllText(localRobotIPDBPath);
+        }
+
+        private void SetLocalRobotIP(string ip)
+        {
+            File.WriteAllText(robotSpeedsDBPath, ip);
         }
     }
 }
