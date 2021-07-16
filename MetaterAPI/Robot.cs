@@ -102,7 +102,7 @@ namespace MetaterAPI
 
         private void SetLocalRobotIP(string ip)
         {
-            File.WriteAllText(robotSpeedsDBPath, ip);
+            File.WriteAllText(localRobotIPDBPath, ip);
         }
     }
 }
